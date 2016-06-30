@@ -3,7 +3,8 @@ class LettersController < ApplicationController
 
   def deliver
     @letter = Letter.find(params[:id])
-    @letter.deliver
+    #@letter.deliver
+    @letter.delay.deliver
     redirect_to letters_url, notice: "手紙を送りました。"
   end
 
