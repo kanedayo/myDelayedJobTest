@@ -1,15 +1,18 @@
 ■参考: RailsでAcitiveJobとDelayedJobを使ってバックグランド処理を行う
 cf. http://ruby-rails.hatenadiary.com/entry/20150304/1425396671
+■参考: Active Job の基礎
+cf. http://railsguides.jp/active_job_basics.html
 
-ActiveJob: バックエンド処理(Job)の管理
-DelayedJob : 非同期実行 : 専用テーブル(redis不要)
-Sidekiq    : 非同期実行 : redis/管理画面/マルチスレッド
-Resque     : 非同期実行 : redis/管理画面/フォーク
+非同期実行
+ActiveJob  : Rails標準
+DelayedJob : 専用テーブル(redis不要)
+Resque     : redis/管理画面あり/フォーク
+Sidekiq    : redis/管理画面あり/マルチスレッド
 
 
 ○主な手順
 Gemfile:
-gem 'delayed_job_actie_record'
+gem 'delayed_job_active_record'
 gem 'daemons'
 
 rails g delayed_job:active_record # job管理テーブル
@@ -27,11 +30,10 @@ rake db:migrate
 
 ○workerの起動
 # 例. fg処理
-bin/rake jobs:work # 
+rake jobs:work # 終了は、Ctrl+C
 
 # 例. bg処理(2woker)
-bin/delayed_job -n 2 start
-bin/delayed_job stop
-bin/delayed_job -n 2 restart
-# ls -1 tmp/pids/delayed_job.?.pid # 起動中のpids
-
+./bin/delayed_job -n 2 start
+./bin/delayed_job stop
+./bin/delayed_job -n 2 restart
+./bin/delayed_job status # 起動確認
